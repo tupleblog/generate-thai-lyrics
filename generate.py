@@ -42,15 +42,18 @@ with open(args.checkpoint, 'rb') as f:
     model = torch.load(f, map_location=lambda storage, loc: storage).to(device)
 model.eval()
 
-file_name = 'corpus_lyrics.pkl'
+file_name = 'corpus_lyrics.json'
 if os.path.exists(file_name):
-    import pickle
-    with open(file_name, mode='rb') as f:
-        corpus = pickle.load(f)
+    import json
+    with open(file_name, mode='r') as f:
+        corpus = json.load(f)
+    # convert key to integer
+    corpus['dictionary_reverse'] = {int(k): v for k, v in corpus['dictionary_reverse'].items()}
 else:
-    corpus = LyricCorpus(args.data)
+    print('train or download corpus_lyrics.json first!')
 
-ntokens = len(corpus.dictionary)
+
+ntokens = len(corpus['dictionary'])
 hidden = model.init_hidden(1)
 input = torch.randint(ntokens, (1, 1), dtype=torch.long).to(device)
 
@@ -61,7 +64,7 @@ with open(args.outf, 'w') as outf:
             word_weights = output.squeeze().div(args.temperature).exp().cpu()
             word_idx = torch.multinomial(word_weights, 1)[0]
             input.fill_(word_idx)
-            word = corpus.dictionary_reverse.get(int(word_idx), '')
+            word = corpus['dictionary_reverse'].get(int(word_idx), '')
 
             outf.write(word + ('\n' if i % 20 == 19 else ''))
 
