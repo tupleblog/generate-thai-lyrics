@@ -83,3 +83,14 @@ class LyricCorpus(object):
         """
         ids = np.array([self.dictionary.get(word, 0) for word in words])
         return torch.from_numpy(ids)
+
+    def save_to_json(self, path_json='./corpus.json'):
+        """
+        Save LyricCorpus class to json format
+        """
+        corpus.train = corpus.train.tolist()
+        corpus.valid = corpus.valid.tolist()
+        corpus_dict = self.__dict__
+        corpus_dict.pop('train_', None)
+        corpus_dict.pop('val_', None)
+        json.dump(corpus_dict, open(path_json, 'w'))

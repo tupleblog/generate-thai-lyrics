@@ -7,6 +7,8 @@ import torch
 import torch.nn as nn
 import torch.onnx
 import pickle
+import json
+import numpy as np
 
 from datatool import LyricCorpus
 import model
@@ -60,15 +62,39 @@ device = torch.device("cuda" if args.cuda else "cpu")
 # Load data
 ###############################################################################
 
+def corpus_to_json(corpus, path_json='./corpus.json'):
+    """
+    Save LyricCorpus class to json format
+    """
+    corpus.train = corpus.train.tolist()
+    corpus.valid = corpus.valid.tolist()
+    corpus_dict = corpus.__dict__
+    corpus_dict.pop('train_', None)
+    corpus_dict.pop('val_', None)
+    json.dump(corpus_dict, open(path_json, 'w'))
+    return corpus_dict
+
+
+file_name_json = 'corpus_lyrics.json'
 file_name = 'corpus_lyrics.pkl'
-if os.path.exists(file_name):
-    print('load existing corpus')
+if os.path.exists(file_name_json):
+    print('load existing json corpus')
+    with open(file_name_json, mode='r') as f:
+        corpus = json.load(f)
+elif os.path.exists(file_name):
+    print('load existing pickle corpus')
     with open(file_name, mode='rb') as f:
         corpus = pickle.load(f)
+        corpus = corpus_to_json(corpus, 'corpus_lyrics.json')
 else:
+    print('creating corpus from CSV file')
     corpus = LyricCorpus(args.data)
     with open(file_name, 'wb') as f:
     	pickle.dump(corpus, f)
+    corpus = corpus_to_json(corpus, 'corpus_lyrics.json')
+
+corpus['train'] = torch.from_numpy(np.array(corpus['train']))
+corpus['valid'] = torch.from_numpy(np.array(corpus['valid']))
 
 
 # Starting from sequential data, batchify arranges the dataset into columns.
@@ -93,14 +119,14 @@ def batchify(data, bsz):
     return data.to(device)
 
 eval_batch_size = 10
-train_data = batchify(corpus.train, args.batch_size)
-val_data = batchify(corpus.valid, eval_batch_size)
+train_data = batchify(corpus['train'], args.batch_size)
+val_data = batchify(corpus['valid'], eval_batch_size)
 
 ###############################################################################
 # Build the model
 ###############################################################################
 
-ntokens = len(corpus.dictionary)
+ntokens = len(corpus['dictionary'])
 model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.tied).to(device)
 criterion = nn.CrossEntropyLoss()
 
@@ -137,7 +163,7 @@ def evaluate(data_source):
     # Turn on evaluation mode which disables dropout.
     model.eval()
     total_loss = 0.
-    ntokens = len(corpus.dictionary)
+    ntokens = len(corpus['dictionary'])
     hidden = model.init_hidden(eval_batch_size)
     with torch.no_grad():
         for i in range(0, data_source.size(0) - 1, args.bptt):
@@ -154,7 +180,7 @@ def train():
     model.train()
     total_loss = 0.
     start_time = time.time()
-    ntokens = len(corpus.dictionary)
+    ntokens = len(corpus['dictionary'])
     hidden = model.init_hidden(args.batch_size)
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         data, targets = get_batch(train_data, i)
