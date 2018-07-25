@@ -143,3 +143,5 @@ venv.bak/
 # data
 *.pkl
 *.csv
+.tags
+generated.txt

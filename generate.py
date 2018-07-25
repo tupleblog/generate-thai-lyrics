@@ -36,7 +36,11 @@ if args.temperature < 1e-3:
     parser.error("--temperature has to be greater or equal 1e-3")
 
 with open(args.checkpoint, 'rb') as f:
-    model = torch.load(f).to(device)
+    """
+        Loading weights for CPU model while trained on GPU
+        https://discuss.pytorch.org/t/loading-weights-for-cpu-model-while-trained-on-gpu/1032/2
+    """
+    model = torch.load(f, map_location=lambda storage, loc: storage).to(device)
 model.eval()
 
 file_name = 'corpus_lyrics.pkl'
