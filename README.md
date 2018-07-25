@@ -27,24 +27,24 @@ wget https://s3-us-west-2.amazonaws.com/thai-corpus/corpus_lyrics.json # corpus
 python train.py --cuda --epochs 40 --tied --lr 0.02
 ```
 
-## Generate lyrics
+## Generate Lyrics from trained model
 
 To generate lyrics, run the following command.
 
 ```bash
-python generate.py --temperature 0.8 --words 200 # generate lyrics samples from the trained LSTM model.
+python generate.py --temperature 0.8 --words 200 # generate lyrics samples from the trained LSTM model using (default) `model.pt`
 ```
 
-## Pre-trained model
+## Generate Lyrics using Pre-trained model
 
 We already trained LSTM sequence prediction model on Thai song lyrics where you can download from Google drive.
 Download model from [here](https://drive.google.com/file/d/1wTMCBB3Vrwstld-LBwYEF6nwFHyqLJT7/view?usp=sharing) and paste to `./thai-song-model.pt` 
-and corpus from [here](https://s3-us-west-2.amazonaws.com/thai-corpus/corpus_lyrics.pkl) and paste to `./corpus_lyrics.pkl`.
+and corpus from [here](https://s3-us-west-2.amazonaws.com/thai-corpus/corpus_lyrics.json) and paste to `./corpus_lyrics.json`.
 
 Now, you can predict Thai lyrics using the following command
 
 ```bash
-python generate.py --temperature 0.8 --checkpoint ./thai-song-model.pt --words 200
+python generate.py --temperature 0.8 --checkpoint ./thai-song-model.pt --words 200 --seed 1111 # generate 200 words lyrics to generated.txt with seed 1111 and temperature 0.8
 ```
 
 ## Dependencies
