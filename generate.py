@@ -62,9 +62,9 @@ with open(args.outf, 'w') as outf:
             word_weights = output.squeeze().div(args.temperature).exp().cpu()
             word_idx = torch.multinomial(word_weights, 1)[0]
             input.fill_(word_idx)
-            word = corpus.dictionary_reverse.get(int(word_idx), 'UNKNOWN')
+            word = corpus.dictionary_reverse.get(int(word_idx), '')
 
-            outf.write(word + ('\n' if i % 20 == 19 else ' '))
+            outf.write(word + ('\n' if i % 20 == 19 else ''))
 
             if i % args.log_interval == 0:
                 print('| Generated {}/{} words'.format(i, args.words))

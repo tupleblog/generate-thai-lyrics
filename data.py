@@ -3,7 +3,6 @@ import os
 import json
 import torch
 from glob import glob
-import deepcut
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -57,6 +56,7 @@ class LyricCorpus(object):
         """
         Tokenize Thai lyrics using deepcut
         """
+        import deepcut
         words = []
         for lyric in tqdm(text_list):
             words.extend(deepcut.tokenize(lyric))

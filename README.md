@@ -38,7 +38,9 @@ python generate.py --temperature 0.8 --words 200 # Generate lyrics samples from 
 ## Pre-trained model
 
 We already trained LSTM sequence prediction model on Thai song lyrics where you can download from Google drive.
-Download [here](https://drive.google.com/file/d/1wTMCBB3Vrwstld-LBwYEF6nwFHyqLJT7/view?usp=sharing) and paste to `./thai-song-model.pt`
+Download model from [here](https://drive.google.com/file/d/1wTMCBB3Vrwstld-LBwYEF6nwFHyqLJT7/view?usp=sharing) and paste to `./thai-song-model.pt` 
+and corpus from [here](https://s3-us-west-2.amazonaws.com/thai-corpus/corpus_lyrics.pkl) and paste to `./corpus_lyrics.pkl`.
+
 Now, you can predict Thai lyrics using the following command
 
 ```bash
