@@ -1,2 +1,5 @@
 torch
 deepcut
+tqdm
+uwsgi
+flask
