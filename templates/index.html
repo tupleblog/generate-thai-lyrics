@@ -7,8 +7,12 @@
 
 <body>
     
+    <h4><b>Thai lyrics generator</b></h4>
+
     {% if len(lyric) != 0 %}
-      <b>{{ lyric }}</p>
+        {% for line in lyric.split('\n') %}
+            {{ line }}</br>
+        {% endfor %}
     {% endif %}
 
 </body>

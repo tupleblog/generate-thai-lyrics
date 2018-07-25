@@ -47,6 +47,21 @@ Now, you can predict Thai lyrics using the following command
 python generate.py --temperature 0.8 --checkpoint ./thai-song-model.pt --words 200 --seed 1111 # generate 200 words lyrics to generated.txt with seed 1111 and temperature 0.8
 ```
 
+
+## Running web service
+
+Same as above, download model from [here](https://drive.google.com/file/d/1wTMCBB3Vrwstld-LBwYEF6nwFHyqLJT7/view?usp=sharing) and paste to `./thai-song-model.pt` 
+and corpus from [here](https://s3-us-west-2.amazonaws.com/thai-corpus/corpus_lyrics.json) and paste to `./corpus_lyrics.json`. 
+Now, you can run Flask application as follows
+
+```bash
+export FLASK_APP=service.py
+flask run --host=0.0.0.0 --port 5555 # running on port 5555, this will serve at http://localhost:5555/
+```
+
+To generate lyrics again, you can refresh the page.
+
+
 ## Dependencies
 
 - [torch](https://pytorch.org/)

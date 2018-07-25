@@ -41,7 +41,7 @@ def index():
             word = corpus['dictionary_reverse'].get(int(word_idx), '')
             lyric += word + ('\n' if i % 20 == 19 else ' ')
     lyric = re.sub(' +', '', lyric)
-    data = {'lyric': lyric.replace('\n', '</br>'), 'len': len}
+    data = {'lyric': lyric, 'len': len}
     return flask.render_template('index.html', **data)
 
 if __name__ == '__main__':
