@@ -4,8 +4,7 @@ import os
 import torch
 from torch.autograd import Variable
 
-import data
-from data import LyricCorpus
+from datatool import LyricCorpus
 
 parser = argparse.ArgumentParser(description='PyTorch Language Model')
 

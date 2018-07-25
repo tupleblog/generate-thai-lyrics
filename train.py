@@ -8,8 +8,7 @@ import torch.nn as nn
 import torch.onnx
 import pickle
 
-import data
-from data import LyricCorpus
+from datatool import LyricCorpus
 import model
 
 parser = argparse.ArgumentParser(description='Path to folder which contains XML file')
