@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../")
 
-import pickle
+import json
 import torch
 import re
 import time
@@ -17,10 +17,10 @@ with open('../thai-song-model.pt', 'rb') as f:
     model = torch.load(f, map_location=lambda storage, loc: storage).to(device)
 model.eval()
 
-with open('../corpus_lyrics.pkl', mode='rb') as f:
-    from datatool import LyricCorpus
-    corpus = pickle.load(f)
-ntokens = len(corpus.dictionary)
+with open('../corpus_lyrics.json', mode='r') as f:
+    corpus = json.load(f)
+corpus['dictionary_reverse'] = {int(k): v for k, v in corpus['dictionary_reverse'].items()}
+ntokens = len(corpus['dictionary'])
 
 @app.route("/")
 def hello():
@@ -41,7 +41,7 @@ def hello():
             word_idx = torch.multinomial(word_weights, 1)[0]
             #print(word_idx)
             input.fill_(word_idx)
-            word = corpus.dictionary_reverse.get(int(word_idx), 'UNKNOWN')
+            word = corpus['dictionary_reverse'].get(int(word_idx), '')
 
             lyric += word + ('\n' if i % 20 == 19 else ' ')
 
