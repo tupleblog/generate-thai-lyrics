@@ -10,11 +10,18 @@ import numpy as np
 from flask import Flask, request, jsonify
 from datatool import LyricCorpus
 
+#import os
+#os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+#os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 MAX_NUM_WORD = 300
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 
 device = torch.device("cpu")
+
+CACHE_TOKENZIE_DICT = {}
 
 with open('../thai-song-model.pt', 'rb') as f:
     model = torch.load(f, map_location=lambda storage, loc: storage).to(device)
@@ -35,7 +42,12 @@ def index():
     hidden = model.init_hidden(1)
 
     if len(start_word) > 0:
-        input_ids = [corpus['dictionary'].get(word, 0) for word in deepcut.tokenize(start_word)]
+        if start_word in CACHE_TOKENZIE_DICT.keys():
+            words = CACHE_TOKENZIE_DICT.get(start_word, [])
+        else:
+            words = deepcut.tokenize(start_word)
+
+        input_ids = [corpus['dictionary'].get(word, 0) for word in words]
         for input_id in input_ids:
             input = torch.from_numpy(np.array([[input_id]])).to(device)
             output, hidden = model(input, hidden)
