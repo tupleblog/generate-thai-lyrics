@@ -8,6 +8,7 @@ import time
 import deepcut
 import numpy as np
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datatool import LyricCorpus
 
 #import os
@@ -18,6 +19,7 @@ MAX_NUM_WORD = 300
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
+CORS(app)
 
 device = torch.device("cpu")
 
