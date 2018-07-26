@@ -5,3 +5,5 @@ RUN pip install torch deepcut tqdm uwsgi flask
 
 ADD . /app
 WORKDIR /app/web
+
+ENTRYPOINT ["uwsgi", "--ini", "uwsgi.ini"]
