@@ -5,11 +5,14 @@ import json
 import torch
 import re
 import time
-from flask import Flask, request
+import deepcut
+import numpy as np
+from flask import Flask, request, jsonify
 from datatool import LyricCorpus
 
+MAX_NUM_WORD = 300
+
 app = Flask(__name__)
-app.debug = True
 
 device = torch.device("cpu")
 
@@ -23,15 +26,22 @@ corpus['dictionary_reverse'] = {int(k): v for k, v in corpus['dictionary_reverse
 ntokens = len(corpus['dictionary'])
 
 @app.route("/")
-def hello():
+def index():
     num_word = request.args.get('num_word', 150)
-    print("num_word: ", num_word)
-    start = time.time()
+    start_word = request.args.get('start_word', '')
+
+    num_word = MAX_NUM_WORD if int(num_word) > MAX_NUM_WORD else int(num_word)
+
     hidden = model.init_hidden(1)
-    input = torch.randint(ntokens, (1, 1), dtype=torch.long).to(device)
-    end = time.time()
-    print("xxx: " + str(end - start))
-    start = time.time()
+
+    if len(start_word) > 0:
+        input_ids = [corpus['dictionary'].get(word, 0) for word in deepcut.tokenize(start_word)]
+        for input_id in input_ids:
+            input = torch.from_numpy(np.array([[input_id]])).to(device)
+            output, hidden = model(input, hidden)
+    else:
+        input = torch.randint(ntokens, (1, 1), dtype=torch.long).to(device)
+
     temperature = 0.8
     with torch.no_grad():  # no tracking history
         lyric = ""
@@ -45,11 +55,11 @@ def hello():
 
             lyric += word + ('\n' if i % 20 == 19 else ' ')
 
-    lyric = lyric.replace('UNKNOWN', '')
+    lyric = start_word + lyric.replace('UNKNOWN', '')
     lyric = re.sub(' +', '', lyric)
-    end = time.time()
-    print(end - start)
-    return "<pre>" + lyric + "</pre>"
+    data = {'lyric': lyric}
+    return jsonify(data)
 
 if __name__ == '__main__':
+    app.debug = True
     app.run(host="0.0.0.0", port=5555, debug=True)
