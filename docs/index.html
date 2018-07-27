@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <meta property="og:title" content="แต่งเพลงไทยใช้ AI ก็ได้">
+  <meta property="og:description" content="แต่งเพลงไทยใช้ AI ก็ได้">
+  <meta property="og:url" content="https://tupleblog.github.io/generate-thai-lyrics/">
+  <meta property="og:site_name" content="generate-thai-lyrics">
+  <meta property="og:image" content="https://tupleblog.github.io/generate-thai-lyrics/images/og.png">
+  <title></title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/cmu-sans-serif" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
+    crossorigin="anonymous">
+  <!-- <link href="css/style.css" rel="stylesheet"> -->
+  <style>
+    .footer, .push {
+      height: 5em;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* center footer */
+    .flex-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flex-item {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- sticky footer -->
+  <div class="wrapper">
+    <!-- nav bar -->
+    <nav class="red accent-4" role="navigation">
+      <div id="head-container" class="nav-wrapper container">
+        <a id="logo-container" href="https://tupleblog.github.io/generate-thai-lyrics/" class="">แต่งเพลงไทย</a>
+      </div>
+    </nav>
+
+    <!-- main container -->
+    <div id="main-container" class="container">
+      <br />
+
+      <div class="row">
+        <div class="col s0 m2"></div>
+        <div class="col s12 m6">
+
+          <div class="input-field">
+            <input type="text" id="start_word" class="" />
+            <label for="start_word">คำขึ้นต้นเพลง</label>
+          </div>
+
+
+        </div>
+
+        <div class="input-field col s12 m2">
+          <select id="num_word">
+            <option value="" disabled selected>เลือกความยาวเนื้อเพลง</option>
+            <option value="50">50 คำ</option>
+            <option value="100">100 คำ</option>
+            <option value="150" selected>150 คำ</option>
+            <option value="200">200 คำ</option>
+            <option value="250">250 คำ</option>
+            <option value="300">300 คำ</option>
+          </select>
+          <label>ความยาวเนื้อเพลง</label>
+        </div>
+
+        <div class="col s0 m2"></div>
+      </div>
+
+      <div class="row">
+        <div class="col s0 m2"></div>
+        <div class="col s12 m8">
+          <center>
+            <button class="btn light-blue darken-2 waves-effect waves-light" onclick="generateLyric();"><i class="material-icons left">music_note</i>แต่งเพลง</button>
+          </center>
+        </div>
+        <div class="col s0 m2"></div>
+      </div>
+
+      <div class="divider" style="margin: 20px 0;"></div>
+
+      <div class="row" id="error-container" style="display: none;">
+        <div class="col s12 m12" style="text-align: center;">
+          <div class="red-text text-lighten-1" style="font-size: 20px; font-wedight: bold;">
+            ขออภัย! <br> เนื่องจากคนขอให้แต่งเพลงเยอะเกินไป กรุณาลองใหม่อีกครั้ง
+          </div>
+          <div><img src="images/mr44.png" /></div>
+        </div>
+      </div>
+
+      <div class="row" id="loading-container" style="display: none;">
+        <div class="col s12 m12" style="text-align: center;">
+          <div class="blue-text text-lighten-1">กำลังแต่งเพลงให้อยู่ รอแปป . . .</div>
+          <br>
+          <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="lyric-container" style="display: none;">
+        <div class="col s0 m2"></div>
+        <div class="col s12 m8">
+          <div class="card">
+            <div class="card-content" id="lyric_content">
+            </div>
+          </div>
+        </div>
+        <div class="col s0 m2"></div>
+      </div>
+    </div>
+
+    <!-- footer pusher -->
+    <div class="push"></div>
+  </div>
+
+  <footer class="footer red accent-4 flex-container">
+    <div class="footer-copyright">
+      <div class="flex-item">
+        Made with
+        <i class="fas fa-heart"></i> by
+        <a class="orange-text text-lighten-3" target="_BLANK" href="https://tupleblog.github.io/">tupleblog</a>
+        &nbsp; | &nbsp;
+        <a class="orange-text text-lighten-3" target="_BLANK" href="https://github.com/tupleblog/generate-thai-lyrics">
+          <i class="fab fa-github"></i> generate-thai-lyrics</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- UI scripts -->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.19.0/sweetalert2.all.min.js"></script>
+
+  <script>
+    $(document).ready(initPage);
+
+    function initPage() {
+      $('select').formSelect();
+    }
+
+    function generateLyric() {
+
+      var start_word = $('#start_word').val();
+      var num_word = $('#num_word').val();
+
+      var url = 'https://api.thailyric.fun/?num_word=' + num_word + '&start_word=' + start_word;
+      $.ajax({
+        url: url,
+        dataType: 'JSON',
+        beforeSend: function() {
+          $('#loading-container').show();
+          $('#lyric-container').hide();
+          $('#error-container').hide();
+        },
+        error: function() {
+          $('#loading-container').hide();
+          $('#error-container').show();
+        },
+        success: function(data) {
+          $('#loading-container').hide();
+          $('#lyric-container').show()
+          $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+        }
+      });
+    }
+
+  </script>
+</body>
+
+</html>
