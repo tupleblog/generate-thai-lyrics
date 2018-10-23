@@ -16,8 +16,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/cmu-sans-serif" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
-    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Pridi:200,300,400" rel="stylesheet">
+    
   <!-- <link href="css/style.css" rel="stylesheet"> -->
   <style>
     .footer, .push {
@@ -34,6 +35,35 @@
 
     .flex-item {
       text-align: center;
+    }
+    #lyric_content {
+      text-align: center;
+      font-family: 'Pridi', sans-serif;
+      font-size: 16pt;
+      font-weight: 300;
+      line-height: 1.5em
+    }
+    #lyric_logo {
+      margin-top: 50px;
+      text-align: center;
+    }
+    #lyric_logo img {
+      width: 75px;
+      height: 75px;
+    }
+    @media screen and ( max-width: 600px ){
+      #lyric_content {
+        font-size: 13pt;
+        font-weight: 300;
+        line-height: 1.2em
+      }
+      #lyric_logo {
+        margin-top: 20px;
+      }
+      #lyric_logo img {
+        width: 40px;
+        height: 40px;
+      }
     }
   </style>
 </head>
@@ -152,8 +182,13 @@
       <div class="row" id="lyric-container" style="display: none;">
         <div class="col s0 m2"></div>
         <div class="col s12 m8">
-          <div class="card">
-            <div class="card-content" id="lyric_content">
+          <div style="text-align: right">
+            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_save"><i class="material-icons left">save</i>บันทึก</button>
+          </div>
+          <div class="card" id="lyric_sheet">
+            <div class="card-content">
+              <div id="lyric_content"></div>
+              <div id="lyric_logo"><img  src="./images/tupleblog_logo.png" /></div>
             </div>
           </div>
         </div>
@@ -182,12 +217,15 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.19.0/sweetalert2.all.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="./js/canvas2image.js"></script>
 
   <script>
     $(document).ready(initPage);
 
     function initPage() {
       $('select').formSelect();
+      $('#btn_save').click(onBtnSaveClicked);
     }
 
     function generateLyric() {
@@ -213,6 +251,12 @@
           $('#lyric-container').show()
           $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
         }
+      });
+    }
+
+    function onBtnSaveClicked() {
+      html2canvas(document.querySelector("#lyric_sheet")).then(canvas => {
+        Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height, 'tupleblog-generate-thai-lyrics.png')
       });
     }
 
