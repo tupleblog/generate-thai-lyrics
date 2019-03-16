@@ -3,4 +3,3 @@ uwsgi
 flask-cors
 pythainlp
 torch
-pickle

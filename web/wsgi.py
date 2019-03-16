@@ -1,3 +1,4 @@
+from model import RNN
 from api2 import app
 
 
