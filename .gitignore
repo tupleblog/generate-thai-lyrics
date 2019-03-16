@@ -141,7 +141,6 @@ venv.bak/
 # End of https://www.gitignore.io/api/macos,python
 
 # data
-*.pkl
 *.csv
 .tags
 generated.txt
