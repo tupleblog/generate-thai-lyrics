@@ -85,7 +85,20 @@ def index():
     generated_lyric = generate(trained_rnn, start_word, 
                             int_to_vocab, 0, num_word)
 
-    data = {'lyric': generated_lyric, 'v': 2}
+    # Add new line
+    sentences = generated_lyric.split(' ')
+    lines = []
+    current_line = ''
+    for i, sentence in enumerate(sentences):
+        sentence_length = len(sentence)
+
+        current_line = current_line + ' ' + sentence
+        if len(current_line)> 20:
+            lines.append(current_line.strip())
+            lines.append("\n")
+            current_line = ''
+
+    data = {'lyric': ''.join(lines), 'v': 2}
     return jsonify(data)
 
 if __name__ == '__main__':
