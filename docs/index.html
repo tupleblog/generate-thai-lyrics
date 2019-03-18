@@ -199,6 +199,7 @@
         <div class="col s12 m8">
           <div style="text-align: right">
             <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_save"><i class="material-icons left">save</i>บันทึก</button>
+            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_share"><i class="material-icons left">share</i>แชร์</button>
           </div>
           <div class="card" id="lyric_sheet">
             <div class="card-content">
@@ -233,14 +234,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.19.0/sweetalert2.all.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="./js/canvas2image.js"></script>
 
+
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
   <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBnOnR-BKG5n8vjB3kDkyn-nPOpd9ljXvs",
+      authDomain: "generate-thai-lyrics.firebaseapp.com",
+      databaseURL: "https://generate-thai-lyrics.firebaseio.com",
+      projectId: "generate-thai-lyrics",
+      storageBucket: "generate-thai-lyrics.appspot.com",
+      messagingSenderId: "897762718118"
+    };
+    firebase.initializeApp(config);
+    var db = firebase.firestore();
+  </script>
+
+  <script>
+
+    var currentLyric = '';
     $(document).ready(initPage);
 
     function initPage() {
       $('select').formSelect();
       $('#btn_save').click(onBtnSaveClicked);
+      $('#btn_share').click(onBtnShareClicked);
+
+      //Load Document
+      var doc_id = new URL(window.location.href).searchParams.get("doc_id");
+      if (doc_id != null) {
+        loadLyric(doc_id);
+      }
 
       // predict from GET parameter 
       var text = new URL(window.location.href).searchParams.get("start_word");
@@ -272,6 +301,7 @@
           $('#loading-container').hide();
           $('#lyric-container').show()
           $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+          currentLyric = data.lyric;
         }
       });
     }
@@ -280,6 +310,80 @@
       html2canvas(document.querySelector("#lyric_sheet")).then(canvas => {
         Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height, 'tupleblog-generate-thai-lyrics.png')
       });
+    }
+
+    function onBtnShareClicked() {
+      if (currentLyric.length == 0) {
+        swal("ยังไม่มีเนื้อเพลง", "", "error");
+        return;
+      }
+
+      callbackSaveSuccess = function(doc_id) {
+        var url = 'https://tupleblog.github.io/generate-thai-lyrics/?doc_id=' + doc_id;
+        swal({
+          content: {
+            element: "input",
+            attributes: {
+              type: "text",
+              value: url,
+            },
+          },
+        });
+        //console.log(url);
+      };
+
+      callbackSaveFailed  = function() {
+        swal("เกิดข้อผิดพลาด", "", "error");
+      };
+
+      saveLyric(callbackSaveSuccess, callbackSaveFailed);
+    }
+
+    function saveLyric(callbackSaveSuccess, callbackSaveFailed) {
+      if (currentLyric.length == 0) {
+        return;
+      }
+
+      var data = {
+        lyric: currentLyric,
+        created: new Date().toISOString(),
+        start_word: $('#start_word').val(),
+      }
+
+      db.collection("lyrics").add(data)
+      .then(function(docRef) {
+          //console.log("Document written with ID: ", docRef.id);
+          if (typeof callbackSaveSuccess == 'function') {
+            callbackSaveSuccess(docRef.id);
+          }
+      })
+      .catch(function(error) {
+          //console.error("Error adding document: ", error);
+          if (typeof callbackSaveFailed == 'function') {
+            callbackSaveFailed(error);
+          }
+      });
+    }
+
+    function loadLyric(doc_id) {
+
+      var docRef = db.collection("lyrics").doc(doc_id);
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              //console.log("Document data:", doc.data());
+              var data = doc.data();
+
+              $('#lyric-container').show()
+              $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+              $('#start_word').val(data.start_word).focus();
+          } else {
+              // doc.data() will be undefined in this case
+              //console.log("No such document!");
+          }
+      }).catch(function(error) {
+          //console.log("Error getting document:", error);
+      });
+
     }
 
   </script>
