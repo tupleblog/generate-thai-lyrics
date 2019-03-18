@@ -1,3 +1,4 @@
 torch
-deepcut
+pythainlp
 tqdm
+scikit-learn
