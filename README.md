@@ -15,3 +15,4 @@ See Jupyter notebook for data scraping, training, and some visualization.
 - [titipata](https://github.com/titipata)
 - [kittinan](https://github.com/kittinan)
 - [bachkukkik](https://github.com/bachkukkik)
+- [tulakann](https://github.com/bluenex)
