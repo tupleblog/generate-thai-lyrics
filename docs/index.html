@@ -10,7 +10,7 @@
   <meta property="og:url" content="https://tupleblog.github.io/generate-thai-lyrics/">
   <meta property="og:site_name" content="generate-thai-lyrics">
   <meta property="og:image" content="https://tupleblog.github.io/generate-thai-lyrics/images/og.png">
-  <title></title>
+  <title>tupleblog - Kukkik AI แต่งเพลง</title>
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -241,6 +241,13 @@
     function initPage() {
       $('select').formSelect();
       $('#btn_save').click(onBtnSaveClicked);
+
+      // predict from GET parameter 
+      var text = new URL(window.location.href).searchParams.get("start_word");
+      if (text != null) {
+          $('#start_word').val(text);
+          generateLyric();
+      }
     }
 
     function generateLyric() {
