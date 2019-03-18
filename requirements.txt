@@ -1,4 +1,3 @@
 torch
 pythainlp
-tqdm
 scikit-learn
