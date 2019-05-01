@@ -8,4 +8,5 @@ RUN pip install numpy -U
 ADD . /app
 WORKDIR /app/web
 
-ENTRYPOINT ["uwsgi", "--ini", "uwsgi.ini"]
+#ENTRYPOINT ["uwsgi", "--ini", "uwsgi.ini"]
+CMD exec uwsgi  --http 0.0.0.0:$PORT -p 1 --threads 8 -w wsgi:app
