@@ -144,3 +144,5 @@ venv.bak/
 *.csv
 .tags
 generated.txt
+
+web/models/transformer/*.pkl
