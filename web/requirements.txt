@@ -2,4 +2,8 @@ flask
 uwsgi
 flask-cors
 pythainlp
-torch
+torch==1.5.0
+deepcut==0.7.0.0
+tensorflow==2.0.0
+h5py==2.10.0
+scikit-learn==0.20.3

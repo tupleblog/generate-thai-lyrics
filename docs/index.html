@@ -14,7 +14,7 @@
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/cmu-sans-serif" type="text/css" />
+  <!--<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/cmu-sans-serif" type="text/css" />-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Pridi:200,300,400" rel="stylesheet">
@@ -113,8 +113,8 @@
           <select id="num_word">
             <option value="" disabled selected>เลือกความยาวเนื้อเพลง</option>
             <option value="50">50 คำ</option>
-            <option value="100">100 คำ</option>
-            <option value="150" selected>150 คำ</option>
+            <option value="100" selected>100 คำ</option>
+            <option value="150">150 คำ</option>
             <option value="200">200 คำ</option>
             <option value="250">250 คำ</option>
             <option value="300">300 คำ</option>
@@ -284,7 +284,7 @@
       var start_word = $('#start_word').val();
       var num_word = $('#num_word').val();
 
-      var url = 'https://lyric-backend-3-f7gdzdik4a-uc.a.run.app/?num_word=' + num_word + '&start_word=' + start_word;
+      var url = 'https://lyric-transformer-f7gdzdik4a-as.a.run.app/?num_word=' + num_word + '&start_word=' + start_word;
       $.ajax({
         url: url,
         dataType: 'JSON',

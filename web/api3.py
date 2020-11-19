@@ -52,6 +52,8 @@ model_save_path = "./models/transformer/siamzone-v3.pkl"
 model.load_state_dict(torch.load(model_save_path, map_location=torch.device("cpu")))
 model.eval()
 
+print("Model initialized")
+
 
 def top_k_top_p_filtering(logits, top_k, top_p, temperature, filter_value=-float("Inf")):
     # Hugging Face script to apply top k and nucleus sampling
@@ -159,4 +161,4 @@ def index():
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host="0.0.0.0", port=5555, debug=True)
+    app.run(host="0.0.0.0", port=8585, debug=True)
