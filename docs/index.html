@@ -16,7 +16,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/cmu-sans-serif" type="text/css" />-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+    integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Pridi:200,300,400" rel="stylesheet">
 
   <!-- <link href="css/style.css" rel="stylesheet"> -->
@@ -25,7 +26,8 @@
       margin: 0;
     }
 
-    html, body {
+    html,
+    body {
       height: 100%;
     }
 
@@ -36,9 +38,10 @@
       margin: 0 auto -5em;
     }
 
-    .footer, .push {
+    .footer,
+    .push {
       height: 5em;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255, 255, 255, 0.8);
     }
 
     /* center footer */
@@ -51,6 +54,7 @@
     .flex-item {
       text-align: center;
     }
+
     #lyric_content {
       text-align: center;
       font-family: 'Pridi', sans-serif;
@@ -58,27 +62,36 @@
       font-weight: 300;
       line-height: 1.5em
     }
+
     #lyric_logo {
       margin-top: 50px;
       text-align: center;
     }
+
     #lyric_logo img {
       width: 75px;
       height: 75px;
     }
-    @media screen and ( max-width: 600px ){
+
+    @media screen and (max-width: 600px) {
       #lyric_content {
         font-size: 13pt;
         font-weight: 300;
         line-height: 1.2em
       }
+
       #lyric_logo {
         margin-top: 20px;
       }
+
       #lyric_logo img {
         width: 40px;
         height: 40px;
       }
+    }
+
+    .rm-box-shadow {
+      box-shadow: unset !important;
     }
   </style>
 </head>
@@ -129,7 +142,8 @@
         <div class="col s0 m2"></div>
         <div class="col s12 m8">
           <center>
-            <button class="btn light-blue darken-2 waves-effect waves-light" onclick="generateLyric();"><i class="material-icons left">music_note</i>แต่งเพลง</button>
+            <button class="btn light-blue darken-2 waves-effect waves-light" onclick="generateLyric();"><i
+                class="material-icons left">music_note</i>แต่งเพลง</button>
           </center>
         </div>
         <div class="col s0 m2"></div>
@@ -154,9 +168,11 @@
             <div class="spinner-layer spinner-blue">
               <div class="circle-clipper left">
                 <div class="circle"></div>
-              </div><div class="gap-patch">
+              </div>
+              <div class="gap-patch">
                 <div class="circle"></div>
-              </div><div class="circle-clipper right">
+              </div>
+              <div class="circle-clipper right">
                 <div class="circle"></div>
               </div>
             </div>
@@ -164,9 +180,11 @@
             <div class="spinner-layer spinner-red">
               <div class="circle-clipper left">
                 <div class="circle"></div>
-              </div><div class="gap-patch">
+              </div>
+              <div class="gap-patch">
                 <div class="circle"></div>
-              </div><div class="circle-clipper right">
+              </div>
+              <div class="circle-clipper right">
                 <div class="circle"></div>
               </div>
             </div>
@@ -174,9 +192,11 @@
             <div class="spinner-layer spinner-yellow">
               <div class="circle-clipper left">
                 <div class="circle"></div>
-              </div><div class="gap-patch">
+              </div>
+              <div class="gap-patch">
                 <div class="circle"></div>
-              </div><div class="circle-clipper right">
+              </div>
+              <div class="circle-clipper right">
                 <div class="circle"></div>
               </div>
             </div>
@@ -184,9 +204,11 @@
             <div class="spinner-layer spinner-green">
               <div class="circle-clipper left">
                 <div class="circle"></div>
-              </div><div class="gap-patch">
+              </div>
+              <div class="gap-patch">
                 <div class="circle"></div>
-              </div><div class="circle-clipper right">
+              </div>
+              <div class="circle-clipper right">
                 <div class="circle"></div>
               </div>
             </div>
@@ -198,13 +220,15 @@
         <div class="col s0 m2"></div>
         <div class="col s12 m8">
           <div style="text-align: right">
-            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_save"><i class="material-icons left">save</i>บันทึก</button>
-            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_share"><i class="material-icons left">share</i>แชร์</button>
+            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_save"><i
+                class="material-icons left">save</i>บันทึก</button>
+            <button class="btn light-blue darken-2 waves-effect waves-light" id="btn_share"><i
+                class="material-icons left">share</i>แชร์</button>
           </div>
           <div class="card" id="lyric_sheet">
             <div class="card-content">
               <div id="lyric_content"></div>
-              <div id="lyric_logo"><img  src="./images/tupleblog_logo.png" /></div>
+              <div id="lyric_logo"><img src="./images/tupleblog_logo.png" /></div>
             </div>
           </div>
         </div>
@@ -256,7 +280,6 @@
   </script>
 
   <script>
-
     var currentLyric = '';
     $(document).ready(initPage);
 
@@ -274,8 +297,8 @@
       // predict from GET parameter 
       var text = new URL(window.location.href).searchParams.get("start_word");
       if (text != null) {
-          $('#start_word').val(text);
-          generateLyric();
+        $('#start_word').val(text);
+        generateLyric();
       }
     }
 
@@ -285,19 +308,20 @@
       var num_word = $('#num_word').val();
 
       var url = 'https://lyric-transformer-f7gdzdik4a-as.a.run.app/?num_word=' + num_word + '&start_word=' + start_word;
+      //var url = 'http://0.0.0.0:8585/?num_word=' + num_word + '&start_word=' + start_word;
       $.ajax({
         url: url,
         dataType: 'JSON',
-        beforeSend: function() {
+        beforeSend: function () {
           $('#loading-container').show();
           $('#lyric-container').hide();
           $('#error-container').hide();
         },
-        error: function() {
+        error: function () {
           $('#loading-container').hide();
           $('#error-container').show();
         },
-        success: function(data) {
+        success: function (data) {
           $('#loading-container').hide();
           $('#lyric-container').show()
           $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
@@ -307,8 +331,15 @@
     }
 
     function onBtnSaveClicked() {
-      html2canvas(document.querySelector("#lyric_sheet")).then(canvas => {
-        Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height, 'tupleblog-generate-thai-lyrics.png')
+      $('#lyric_sheet').addClass("rm-box-shadow ");
+      html2canvas(document.querySelector("#lyric_sheet"), {
+        background: "#fff",
+        scrollY: -window.scrollY
+      }).then(canvas => {
+        let file_name = 'tupleblog-generate-thai-lyrics-' + Math.floor(Date.now() / 1000) + '.png';
+        Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height, file_name)
+
+        $('#lyric_sheet').removeClass("rm-box-shadow ");
       });
     }
 
@@ -318,7 +349,7 @@
         return;
       }
 
-      callbackSaveSuccess = function(doc_id) {
+      callbackSaveSuccess = function (doc_id) {
         var url = 'https://tupleblog.github.io/generate-thai-lyrics/?doc_id=' + doc_id;
         swal({
           content: {
@@ -332,7 +363,7 @@
         //console.log(url);
       };
 
-      callbackSaveFailed  = function() {
+      callbackSaveFailed = function () {
         swal("เกิดข้อผิดพลาด", "", "error");
       };
 
@@ -351,41 +382,40 @@
       }
 
       db.collection("lyrics").add(data)
-      .then(function(docRef) {
+        .then(function (docRef) {
           //console.log("Document written with ID: ", docRef.id);
           if (typeof callbackSaveSuccess == 'function') {
             callbackSaveSuccess(docRef.id);
           }
-      })
-      .catch(function(error) {
+        })
+        .catch(function (error) {
           //console.error("Error adding document: ", error);
           if (typeof callbackSaveFailed == 'function') {
             callbackSaveFailed(error);
           }
-      });
+        });
     }
 
     function loadLyric(doc_id) {
 
       var docRef = db.collection("lyrics").doc(doc_id);
-      docRef.get().then(function(doc) {
-          if (doc.exists) {
-              //console.log("Document data:", doc.data());
-              var data = doc.data();
+      docRef.get().then(function (doc) {
+        if (doc.exists) {
+          //console.log("Document data:", doc.data());
+          var data = doc.data();
 
-              $('#lyric-container').show()
-              $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
-              $('#start_word').val(data.start_word).focus();
-          } else {
-              // doc.data() will be undefined in this case
-              //console.log("No such document!");
-          }
-      }).catch(function(error) {
-          //console.log("Error getting document:", error);
+          $('#lyric-container').show()
+          $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+          $('#start_word').val(data.start_word).focus();
+        } else {
+          // doc.data() will be undefined in this case
+          //console.log("No such document!");
+        }
+      }).catch(function (error) {
+        //console.log("Error getting document:", error);
       });
 
     }
-
   </script>
 </body>
 
