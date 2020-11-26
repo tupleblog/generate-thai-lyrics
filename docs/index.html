@@ -142,8 +142,10 @@
         <div class="col s0 m2"></div>
         <div class="col s12 m8">
           <center>
-            <button class="btn light-blue darken-2 waves-effect waves-light" onclick="generateLyric();"><i
-                class="material-icons left">music_note</i>แต่งเพลง</button>
+            <button id="btn-gen" class="btn light-blue darken-2 waves-effect waves-light" onclick="generateLyric();">
+              <i class="material-icons left">music_note</i>
+              แต่งเพลง
+            </button>
           </center>
         </div>
         <div class="col s0 m2"></div>
@@ -304,6 +306,8 @@
 
     function generateLyric() {
 
+      $("#btn-gen").prop("disabled", true);
+
       var start_word = $('#start_word').val();
       var num_word = $('#num_word').val();
 
@@ -320,12 +324,14 @@
         error: function () {
           $('#loading-container').hide();
           $('#error-container').show();
+          $("#btn-gen").prop("disabled", false);
         },
         success: function (data) {
           $('#loading-container').hide();
           $('#lyric-container').show()
           $('#lyric_content').html(data.lyric.replace(/(?:\r\n|\r|\n)/g, '<br>'));
           currentLyric = data.lyric;
+          $("#btn-gen").prop("disabled", false);
         }
       });
     }
