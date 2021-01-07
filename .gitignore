@@ -145,4 +145,6 @@ venv.bak/
 .tags
 generated.txt
 
-web/models/transformer/*.pkl
+api/models/transformer/*.pkl
+train/*.pkl
+train/*.pickle

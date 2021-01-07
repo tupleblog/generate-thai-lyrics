@@ -1,6 +1,5 @@
 from model import RNN
-from api3 import app
-
+from api import app
 
 
 if __name__ == "__main__":

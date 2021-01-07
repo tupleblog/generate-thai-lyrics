@@ -22,6 +22,7 @@ from flask_cors import CORS
 from model import RNN, TransformerModel
 
 import functools
+import timeit
 
 
 MAX_NUM_WORD = 300
@@ -34,7 +35,7 @@ device = torch.device("cpu")
 train_on_gpu = torch.cuda.is_available()
 train_on_gpu = False
 
-vocab = pickle.load(open("models/transformer/vocab_transformer.pkl", "rb"))
+vocab = pickle.load(open("models/transformer/vocab_siamzone-v4-space.pkl", "rb"))
 
 vocab_to_int = vocab["vocab_to_int"]
 int_to_vocab = vocab["int_to_vocab"]
@@ -48,7 +49,7 @@ dropout = 0.2
 
 model = TransformerModel(ntokens, emsize, nhead, nhid, nlayers, dropout).to(device)
 
-model_save_path = "./models/transformer/siamzone-v3.pkl"
+model_save_path = "./models/transformer/lm-siamzone-v4-space-342.pkl"
 model.load_state_dict(torch.load(model_save_path, map_location=torch.device("cpu")))
 model.eval()
 
@@ -121,12 +122,13 @@ def predict(model, start_word="อยากจะไป", size=50):
 @app.route("/")
 def index():
 
+    start_time = timeit.default_timer()
+
     start_word = request.args.get("start_word", "")
     num_word = request.args.get("num_word", 50)
     num_word = MAX_NUM_WORD if int(num_word) > MAX_NUM_WORD else int(num_word)
 
     generated_lyric = predict(model, start_word, num_word)
-    print(generated_lyric)
 
     # Add new line
     # sentences = generated_lyric.split(" ")
@@ -136,26 +138,21 @@ def index():
             continue
         sentences += w
 
-    print(sent_tokenize(sentences))
-
+    sentences = sentences.split(" ")
     lines = []
     current_line = ""
-    cnt = 0
-    for i, sentence in enumerate(generated_lyric):
+    for i, sentence in enumerate(sentences):
+        sentence_length = len(sentence)
 
-        if sentence in ["<unk>"]:
-            continue
-
-        cnt += 1
-
-        current_line = current_line + sentence
-        if cnt % 10 == 0:
+        current_line = current_line + " " + sentence
+        if len(current_line) > 20:
             lines.append(current_line.strip())
             lines.append("\n")
             current_line = ""
-            cnt = 0
 
-    data = {"lyric": "".join(lines), "v": 3}
+    usage_time = round(timeit.default_timer() - start_time, 3)
+
+    data = {"lyric": "".join(lines), "usage_time": usage_time, "v": 3}
     return jsonify(data)
 
 
