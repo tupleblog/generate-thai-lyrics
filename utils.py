@@ -49,18 +49,33 @@ def create_lookup_dict(tokenized_lyrics, n_min=None):
 
 
 def scrape_siamzone_url(d):
-    soup = BeautifulSoup(requests.get('https://www.siamzone.com/music/thailyric/%d' % d).content, 'html.parser')
-    title, artist_name = soup.find('title').text.split('|')
-    title, artist_name = title.strip(), artist_name.strip()
-    n_shares = int(soup.find('span', attrs={'class': 'sz-social-number'}).text.replace(',', ''))
-    full_lyrics = soup.find('div', attrs={'itemprop': 'articleBody'}).text.strip()
+    """
+    Script to scrape Siamzone lyrics
+
+    Usage
+    =====
+    >>> scraped_siamzone_df = scrape_siamzone(start=1, end=20200)
+    >>> scraped_siamzone_df['html'] = scraped_siamzone_df.soup.map(lambda x: x.prettify())
+    """
+    soup = BeautifulSoup(requests.get('https://www.siamzone.com/music/thailyric/{}'.format(d)).content, 'html.parser')
+    song_title, artist_name = soup.find('title').text.split('|')
+    song_title, artist_name = song_title.replace("เนื้อเพลง ", "").strip(), artist_name.strip()
+    try:
+        n_views = ' '.join(soup.find('div', attrs={'class': 'has-text-info'}).text.strip().split())
+    except:
+        n_views = ''
+    try:
+        full_lyrics = soup.find_all('div', attrs={'class': 'column is-6-desktop'})[1]
+        lyrics = full_lyrics.find("div", attrs={'style': "margin-bottom: 1rem;"}).text.strip()
+    except:
+        lyrics = ""
     return {
         'url': 'https://www.siamzone.com/music/thailyric/%d' % d,
         'soup': soup, 
-        'title': title,
+        'song_title': song_title,
         'artist_name': artist_name,
-        'n_shares': n_shares,
-        'full_lyrics': full_lyrics
+        'n_views': n_views,
+        'lyrics': lyrics
     }
 
 def scrape_siamzon():

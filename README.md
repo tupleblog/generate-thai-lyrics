@@ -1,22 +1,24 @@
 # Generate Thai Song Lyrics
 
-We use a multi-layer RNN (LSTM) for a lyrics generation task.
-See Jupyter notebook for data scraping, training, and some visualization.
-
+We use a transformer model trained on Siamzone lyrics to generate
+new lyrics. The demo can be found on [https://tupleblog.github.io/generate-thai-lyrics/](https://tupleblog.github.io/generate-thai-lyrics/)
 
 ## Dataset and model
 
-We use the lyrics from [siamzone](https://www.siamzone.com) website and our training set. 
-The training preparation is similar to this [blog post](https://brangerbriz.com/blog/using-machine-learning-to-create-new-melodies). 
-Basically, we use previous context words to predict the next word and then update the weight of our LSTM model.
+We use the lyrics from [siamzone](https://www.siamzone.com) website as our training set.
+The training preparation is similar to this [blog post](https://brangerbriz.com/blog/using-machine-learning-to-create-new-melodies).
+Basically, our task is to predict the next word given all the previous words.
+You can see more script in `train` folder to see how we train LSTM or Transformer model.
 
+## Next steps
+
+We plan to improve our model using larger model. Please stay tuned!
 
 ## Dependencies
 
 - [torch](https://pytorch.org/)
 - [pythainlp](https://github.com/PyThaiNLP/pythainlp)
 - [scikit-learn](https://scikit-learn.org/stable/)
-
 
 ## Members
 
