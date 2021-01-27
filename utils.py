@@ -1,5 +1,6 @@
 from itertools import chain
 from collections import Counter
+from tqdm import tqdm
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -50,12 +51,7 @@ def create_lookup_dict(tokenized_lyrics, n_min=None):
 
 def scrape_siamzone_url(d):
     """
-    Script to scrape Siamzone lyrics
-
-    Usage
-    =====
-    >>> scraped_siamzone_df = scrape_siamzone(start=1, end=20200)
-    >>> scraped_siamzone_df['html'] = scraped_siamzone_df.soup.map(lambda x: x.prettify())
+    Script to scrape Siamzone lyrics from a given song_id (integer)
     """
     soup = BeautifulSoup(requests.get('https://www.siamzone.com/music/thailyric/{}'.format(d)).content, 'html.parser')
     song_title, artist_name = soup.find('title').text.split('|')
@@ -78,14 +74,21 @@ def scrape_siamzone_url(d):
         'lyrics': lyrics
     }
 
-def scrape_siamzon():
+
+def scrape_siamzone(start=1, end=20200):
+    """
+    Scrape Siamzon URL and return dictioanry output
+
+    Usage
+    =====
+    >>> scraped_siamzone_df = scrape_siamzone(start=1, end=20200)
+    >>> scraped_siamzone_df['html'] = scraped_siamzone_df.soup.map(lambda x: x.prettify())
+    """
     scraped_siamzone = []
-    for i in range(14050, 16041):
+    for i in tqdm(range(start, end)):
         try:
             scraped_siamzone.append(scrape_siamzone_url(i))
         except:
             pass
-
     scraped_siamzone_df = pd.DataFrame(scraped_siamzone)
-    scraped_siamzone_df['lyrics'] = scraped_siamzone_df.full_lyrics.map(clean_lyrics)
     return scraped_siamzone_df
